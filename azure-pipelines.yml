@@ -1,0 +1,123 @@
+trigger:
+  - main
+
+pool:
+  name: 'Default'
+  demands:
+    - agent.name -equals Agent-PC-Ndongo
+
+variables:
+  buildConfiguration: 'Release'
+  backendProject: 'ChatApp.csproj'
+  artifactName: 'drop'
+  webAppNameBackend: 'HelloFriends-Backend'   # Nom exact de ton App Service backend
+  webAppNameFrontend: 'HelloFriends-Frontend' # Nom exact de ton App Service frontend
+  azureServiceConnection: 'AzureConnection' # Nom de ta Service Connection DevOps
+
+stages:
+# ======================
+# 1️⃣ BUILD BACKEND
+# ======================
+- stage: Build_Backend
+  displayName: "Build .NET Backend"
+  jobs:
+    - job: Backend
+      displayName: "Restore, Build & Publish Backend"
+      steps:
+        - task: UseDotNet@2
+          displayName: "Use .NET 8 SDK"
+          inputs:
+            packageType: 'sdk'
+            version: '8.x'
+
+        - script: dotnet restore
+          workingDirectory: backend
+          displayName: "Restore NuGet packages"
+
+        - script: dotnet build $(backendProject) --configuration $(buildConfiguration)
+          workingDirectory: backend
+          displayName: "Build Backend"
+
+        - script: dotnet publish $(backendProject) -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)\backend
+          workingDirectory: backend
+          displayName: "Publish Backend"
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+            pathToPublish: '$(Build.ArtifactStagingDirectory)\backend'
+            artifactName: 'backend'
+            publishLocation: 'Container'
+          displayName: "Publish Backend Artifact"
+
+# ======================
+# 2️⃣ BUILD FRONTEND
+# ======================
+- stage: Build_Frontend
+  displayName: "Build Angular Frontend"
+  dependsOn: Build_Backend
+  jobs:
+    - job: Frontend
+      displayName: "Install, Build & Publish Angular"
+      steps:
+        - task: NodeTool@0
+          displayName: "Use Node.js 18"
+          inputs:
+            versionSpec: '18.x'
+
+        - script: npm ci
+          workingDirectory: frontend
+          displayName: "Install Dependencies"
+
+        - script: npm run build -- --configuration=production
+          workingDirectory: frontend
+          displayName: "Build Angular App"
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+            pathToPublish: 'frontend\dist'
+            artifactName: 'frontend'
+            publishLocation: 'Container'
+          displayName: "Publish Frontend Artifact"
+
+# ======================
+# 3️⃣ DEPLOYMENT
+# ======================
+- stage: Deploy
+  displayName: "Deploy to Azure App Services"
+  dependsOn: [Build_Backend, Build_Frontend]
+  jobs:
+    - deployment: Deploy_Backend
+      displayName: "Deploy Backend API"
+      environment: 'production'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - download: current
+                artifact: backend
+
+              - task: AzureWebApp@1
+                displayName: "Deploy Backend to Azure"
+                inputs:
+                  azureSubscription: $(azureServiceConnection)
+                  appName: $(webAppNameBackend)
+                  package: $(Pipeline.Workspace)/backend
+                  runtimeStack: 'DOTNETCORE|8.0'
+
+    - deployment: Deploy_Frontend
+      displayName: "Deploy Angular Frontend"
+      environment: 'production'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - download: current
+                artifact: frontend
+
+              - task: AzureWebApp@1
+                displayName: "Deploy Frontend to Azure"
+                inputs:
+                  azureSubscription: $(azureServiceConnection)
+                  appName: $(webAppNameFrontend)
+                  package: $(Pipeline.Workspace)/frontend
+                  runtimeStack: 'NODE|18-lts'

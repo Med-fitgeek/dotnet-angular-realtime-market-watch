@@ -3,4 +3,5 @@
 ################################################################################
 
 /chat-api/.vs/ChatApp/CopilotIndices/17.12.53.23981/SemanticSymbols.db-shm
-.vs/
+.vs/frontend/node_modules/
+frontend/.angular/
