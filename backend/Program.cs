@@ -1,4 +1,5 @@
 using MarketWatchApi.Data;
+using MarketWatchApi.Hubs;
 using MarketWatchApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;

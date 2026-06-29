@@ -1,12 +1,12 @@
-using ChatApi.Hubs;
-using ChatApi.Models;
+using MarketWatchApi.Hubs;
+using MarketWatchApi.Models;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ChatApi.Services
+namespace MarketWatchApi.Services
 {
 	public class PriceSimulatorService : BackgroundService
 	{

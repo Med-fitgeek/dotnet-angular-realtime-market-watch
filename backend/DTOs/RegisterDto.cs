@@ -1,4 +1,4 @@
-namespace ChatApp.DTOs
+namespace MarketWatchApi.DTOs
 {
     public class RegisterDto
     {

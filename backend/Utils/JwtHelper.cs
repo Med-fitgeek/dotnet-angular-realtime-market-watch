@@ -1,10 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ChatApp.Models;
+using MarketWatchApi.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ChatApp.Utils
+namespace MarketWatchApi.Utils
 {
     public static class JwtHelper
     {

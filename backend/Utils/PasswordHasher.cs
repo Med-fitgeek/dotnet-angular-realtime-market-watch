@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
-namespace ChatApp.Utils
+namespace MarketWatchApi.Utils
 {
     public class PasswordHasher
     {

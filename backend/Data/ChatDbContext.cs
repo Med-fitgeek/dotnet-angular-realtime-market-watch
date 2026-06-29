@@ -9,7 +9,7 @@ namespace MarketWatchApi.Data
         {
         }
         public DbSet<User> Users => Set<User>();
-        public DbSet<Message> Messages => Set<Message>();
+        public DbSet<PriceUpdate> Messages => Set<PriceUpdate>();
 
 
     }

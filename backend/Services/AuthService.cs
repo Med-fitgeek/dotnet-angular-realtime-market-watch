@@ -1,10 +1,10 @@
-﻿using ChatApp.Data;
-using ChatApp.DTOs;
-using ChatApp.Models;
-using ChatApp.Utils;
+﻿using MarketWatchApi.Data;
+using MarketWatchApi.DTOs;
+using MarketWatchApi.Models;
+using MarketWatchApi.Utils;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChatApp.Services
+namespace MarketWatchApi.Services
 {
     public class AuthService
     {

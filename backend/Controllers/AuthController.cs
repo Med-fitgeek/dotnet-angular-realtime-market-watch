@@ -1,6 +1,6 @@
-﻿using ChatApp.DTOs;
+﻿using MarketWatchApi.DTOs;
 using MarketWatchApi.Services;
-using MarketWatchApi.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace MarketWatchApi.Controllers

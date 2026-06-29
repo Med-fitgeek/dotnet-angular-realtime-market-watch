@@ -1,11 +1,10 @@
-﻿using ChatApi.Models;
-using ChatApi.Services;
+﻿using MarketWatchApi.Models;
+using MarketWatchApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 
-namespace ChatApi.Hubs
+namespace MarketWatchApi.Hubs
 {
     [Authorize] // on garde le JWT existant
     public class PriceHub : Hub

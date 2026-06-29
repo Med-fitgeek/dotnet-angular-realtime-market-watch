@@ -8,7 +8,5 @@
         public string PasswordHash { get; set; } = null!;
         public string Role { get; set; } = "user"; // user / admin
         public bool IsOnline { get; set; } = false;
-
-        public ICollection<Message>? Messages { get; set; }
     }
 }
