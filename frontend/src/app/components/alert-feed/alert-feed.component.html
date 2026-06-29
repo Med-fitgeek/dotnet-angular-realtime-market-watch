@@ -1,0 +1,6 @@
+<div class="alert-feed" *ngIf="alerts.length > 0">
+  <h3>Alertes déclenchées</h3>
+  <div class="alert-item" *ngFor="let a of alerts">
+    ⚠️ {{ a.symbol }} a atteint {{ a.price | number:'1.2-4' }} (seuil : {{ a.threshold }})
+  </div>
+</div>

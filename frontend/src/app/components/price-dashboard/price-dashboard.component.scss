@@ -1,0 +1,18 @@
+.price-dashboard {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  tr {
+    transition: background-color 0.3s ease;
+  }
+  .flash-up { background-color: rgba(34, 197, 94, 0.25); }
+  .flash-down { background-color: rgba(239, 68, 68, 0.25); }
+  .text-up { color: #22c55e; }
+  .text-down { color: #ef4444; }
+}
