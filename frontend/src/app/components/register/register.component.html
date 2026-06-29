@@ -1,0 +1,47 @@
+<div class="register-container">
+    <h2 class="title">S'enregistrer</h2>
+    <form class="form" (ngSubmit) = "onRegister()">
+        <div class="form-group">
+            <label for="username">Veuillez entrer votre pseudonyme</label>
+            <input 
+                type="text" 
+                name="username" 
+                id="username" 
+                [(ngModel)] = "username" 
+                required 
+                placeholder="Pseudonyme" />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Veuillez entrer votre adresse email</label> 
+            <input 
+                type="email" 
+                name="email" 
+                id="email" 
+                [(ngModel)] = "email" 
+                required 
+                placeholder="Email" /> 
+        </div>
+        
+        
+        <div class="form-group">
+            <label for="password">Veuillez entrer votre mot de passe</label> 
+            <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                [(ngModel)] = "password" 
+                required 
+                placeholder="Mot de passe" /> 
+        </div>
+        
+        <button class="button" type="submit">S'enregistrer</button>
+
+        <p *ngIf="error" class="error-message">{{ error }}</p>
+    </form>
+
+    <div class="form-link">
+        <a routerLink="/login">Déjà un compte ? Se connecter</a>
+    </div>
+
+</div>

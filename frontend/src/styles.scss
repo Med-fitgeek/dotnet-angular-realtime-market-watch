@@ -1,0 +1,95 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%;  margin: 0;}
+body {  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+
+.title {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+
+    span {
+      color: #4b8ef1;
+    }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; // espace vertical entre les champs
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+
+  label {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 0.4rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    transition: all 0.25s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #4b8ef1;
+      box-shadow: 0 0 0 4px rgba(75, 142, 241, 0.15);
+    }
+  }
+}
+
+
+.form-link {
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+
+  a {
+    color: #4b8ef1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+
+    &:hover {
+      text-decoration: underline;
+      color: #2f6edb;
+    }
+  }
+}
+
+.button {
+  background: linear-gradient(135deg, #6aa8ff, #4b8ef1);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 2.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+
+  &:hover {
+    background: linear-gradient(135deg, #5b9cf7, #3d7de0);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+
+.error-message {
+  color: #d9534f;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
