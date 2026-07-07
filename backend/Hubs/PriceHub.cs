@@ -11,7 +11,7 @@ namespace MarketWatchApi.Hubs
     {
         public Task SetAlert(string symbol, decimal threshold, bool triggerAbove)
         {
-            PriceSimulatorService.Alerts.Add(new PriceAlert
+            PriceSimulatorService.Alerts.Add(new PriceAlertRuntime
             {
                 ConnectionId = Context.ConnectionId,
                 Symbol = symbol,
