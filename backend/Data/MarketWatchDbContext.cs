@@ -3,9 +3,9 @@ using MarketWatchApi.Models;
 
 namespace MarketWatchApi.Data
 {
-    public class ChatDbContext : DbContext
+    public class MarketWatchDbContext : DbContext
     {
-        public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options)
+        public MarketWatchDbContext(DbContextOptions<MarketWatchDbContext> options) : base(options)
         {
         }
         public DbSet<User> Users => Set<User>();
