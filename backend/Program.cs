@@ -31,7 +31,7 @@ builder.Services.AddSignalR();
 builder.Services.AddHostedService<PriceSimulatorService>();
 
 // Base de données
-builder.Services.AddDbContext<ChatDbContext>(options =>
+builder.Services.AddDbContext<MarketWatchDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Services
