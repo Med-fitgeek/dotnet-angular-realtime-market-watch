@@ -1,16 +1,29 @@
-using Microsoft.EntityFrameworkCore;
+using MarketWatchApi.DTOs;
 using MarketWatchApi.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace MarketWatchApi.Data
+namespace MarketWatchApi.Data;
+
+public class MarketWatchDbContext : DbContext
 {
-    public class MarketWatchDbContext : DbContext
+    public MarketWatchDbContext(DbContextOptions<MarketWatchDbContext> options)
+        : base(options) { }
+
+    public DbSet<User> Users => Set<User>();
+    public DbSet<PriceAlert> PriceAlerts => Set<PriceAlert>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public MarketWatchDbContext(DbContextOptions<MarketWatchDbContext> options) : base(options)
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Ignore<PriceUpdate>(); 
+
+        modelBuilder.Entity<PriceAlert>(e =>
         {
-        }
-        public DbSet<User> Users => Set<User>();
-        public DbSet<PriceUpdate> Messages => Set<PriceUpdate>();
-
-
+            e.HasOne(a => a.User)
+             .WithMany()
+             .HasForeignKey(a => a.UserId)
+             .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }
