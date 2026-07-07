@@ -1,10 +1,7 @@
+using MarketWatchApi.DTOs;
 using MarketWatchApi.Hubs;
 using MarketWatchApi.Models;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MarketWatchApi.Services
 {
@@ -23,7 +20,7 @@ namespace MarketWatchApi.Services
 		};
 
 		// Stockage simple des alertes utilisateurs (en mémoire pour la démo)
-		public static readonly List<PriceAlert> Alerts = new();
+		public static readonly List<PriceAlertRuntime> Alerts = new();
 
 		public PriceSimulatorService(IHubContext<PriceHub> hubContext)
 		{
