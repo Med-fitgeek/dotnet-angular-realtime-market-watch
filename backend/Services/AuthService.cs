@@ -8,8 +8,8 @@ namespace MarketWatchApi.Services
 {
     public class AuthService
     {
-        private readonly ChatDbContext _context;
-        public AuthService(ChatDbContext context)
+        private readonly MarketWatchDbContext _context;
+        public AuthService(MarketWatchDbContext context)
         {
             _context = context;
         }

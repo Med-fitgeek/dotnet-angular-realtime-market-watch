@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, tap } from 'rxjs';
+import { environment } from '../../../environment';  
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -9,7 +10,7 @@ export class AuthService {
   private loggedInSubject = new BehaviorSubject<boolean>(this.hasValidToken());
   isLoggedIn$ = this.loggedInSubject.asObservable();
 
-  private apiUrl = 'http://localhost:5099/api/Auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient, private router: Router) {}
 

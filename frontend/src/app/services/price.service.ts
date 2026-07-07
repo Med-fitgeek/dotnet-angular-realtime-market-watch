@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../environment';  
 
 export interface PriceUpdate {
   symbol: string;
@@ -24,7 +25,7 @@ export class PriceService {
 
   public startConnection(token: string): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:5001/hubs/price', {
+      .withUrl(environment.hubUrl, {          // ← plus de hardcode
         accessTokenFactory: () => token
       })
       .withAutomaticReconnect()
