@@ -1,0 +1,54 @@
+<div class="widget-card">
+
+  <div class="card-header">
+    <h2 class="card-title">🔔 Créer une alerte</h2>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="alert-form" novalidate>
+
+    <div class="field">
+      <label>Actif</label>
+      <select formControlName="symbol" class="select">
+        @for (s of symbols; track s) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Condition</label>
+      <div class="toggle-group">
+        <label class="toggle-option">
+          <input type="radio" formControlName="direction" value="above" />
+          <span>▲ Au-dessus</span>
+        </label>
+        <label class="toggle-option">
+          <input type="radio" formControlName="direction" value="below" />
+          <span>▼ Au-dessous</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Seuil de prix</label>
+      <input
+        type="number"
+        step="0.0001"
+        formControlName="threshold"
+        placeholder="ex: 196.50"
+        class="input"
+        [class.invalid]="threshold.invalid && threshold.touched"
+      />
+      @if (threshold.invalid && threshold.touched) {
+        <span class="field-error">Seuil requis et doit être positif</span>
+      }
+    </div>
+
+    @if (confirmation()) {
+      <div class="alert-confirmation">{{ confirmation() }}</div>
+    }
+
+    <button type="submit" class="btn-submit">Créer l'alerte</button>
+
+  </form>
+</div>
