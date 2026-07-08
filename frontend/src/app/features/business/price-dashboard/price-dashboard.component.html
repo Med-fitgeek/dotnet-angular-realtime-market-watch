@@ -1,0 +1,64 @@
+<div class="dashboard-card">
+
+  <div class="card-header">
+    <h2 class="card-title">
+      <span class="live-dot"></span>
+      Prix en direct
+    </h2>
+    <span class="asset-count">{{ rows().length }} actifs</span>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th>Actif</th>
+          <th class="align-right">Prix</th>
+          <th class="align-right">Variation</th>
+          <th class="align-right">Heure</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.symbol) {
+          <tr [class.flash-up]="row.flash === 'up'"
+              [class.flash-down]="row.flash === 'down'">
+
+            <td>
+              <div class="asset-cell">
+                <span class="asset-badge">{{ row.symbol.charAt(0) }}</span>
+                <span class="asset-name">{{ row.symbol }}</span>
+              </div>
+            </td>
+
+            <td class="align-right price-cell">
+              {{ row.price | number:'1.2-4' }}
+            </td>
+
+            <td class="align-right">
+              <span class="variation-badge"
+                    [class.up]="row.variation > 0"
+                    [class.down]="row.variation < 0"
+                    [class.neutral]="row.variation === 0">
+                {{ row.variation > 0 ? '▲' : row.variation < 0 ? '▼' : '—' }}
+                {{ row.variation | number:'1.2-2' }}%
+              </span>
+            </td>
+
+            <td class="align-right time-cell">
+              {{ row.timestamp }}
+            </td>
+
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" class="empty-state">
+              <span class="spinner"></span>
+              Connexion au flux de données...
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>
