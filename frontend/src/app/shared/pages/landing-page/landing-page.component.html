@@ -1,0 +1,71 @@
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🚀 Temps réel · WebSocket · .NET + Angular</div>
+    <h1 class="hero-title">
+      Suivez vos marchés<br>
+      <span class="gradient-text">en temps réel</span>
+    </h1>
+    <p class="hero-subtitle">
+      MarketWatch vous donne une vision instantanée des prix,
+      avec des alertes intelligentes dès qu'un seuil est franchi.
+    </p>
+    <div class="hero-actions">
+      @if (isLoggedIn()) {
+        <a routerLink="/home" class="btn-primary">Accéder au dashboard →</a>
+      } @else {
+        <a routerLink="/register" class="btn-primary">Commencer gratuitement</a>
+        <a routerLink="/login" class="btn-secondary">Se connecter</a>
+      }
+    </div>
+  </div>
+
+  <!-- Live ticker simulé -->
+  <div class="hero-ticker">
+    <div class="ticker-card up">
+      <span class="ticker-symbol">BTC</span>
+      <span class="ticker-price">43 250 $</span>
+      <span class="ticker-change">+2.4%</span>
+    </div>
+    <div class="ticker-card down">
+      <span class="ticker-symbol">AAPL</span>
+      <span class="ticker-price">189.30 $</span>
+      <span class="ticker-change">-0.8%</span>
+    </div>
+    <div class="ticker-card up">
+      <span class="ticker-symbol">EUR/USD</span>
+      <span class="ticker-price">1.0842</span>
+      <span class="ticker-change">+0.3%</span>
+    </div>
+    <div class="ticker-card up">
+      <span class="ticker-symbol">GOLD</span>
+      <span class="ticker-price">2 018 $</span>
+      <span class="ticker-change">+1.1%</span>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+  <h2 class="section-title">Tout ce dont vous avez besoin</h2>
+  <div class="features-grid">
+    @for (f of features; track f.title) {
+      <div class="feature-card">
+        <span class="feature-icon">{{ f.icon }}</span>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.desc }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- CTA final -->
+<section class="cta">
+  <h2>Prêt à surveiller vos marchés ?</h2>
+  <p>Créez votre compte en 30 secondes.</p>
+  @if (!isLoggedIn()) {
+    <a routerLink="/register" class="btn-primary">Démarrer maintenant</a>
+  } @else {
+    <a routerLink="/home" class="btn-primary">Accéder au dashboard</a>
+  }
+</section>
