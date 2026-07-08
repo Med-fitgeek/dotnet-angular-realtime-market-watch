@@ -1,0 +1,120 @@
+.widget-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.btn-clear {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover { color: #ef4444; background: #fef2f2; }
+}
+
+.feed-body {
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.empty-feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem;
+  color: #9ca3af;
+
+  span { font-size: 2rem; margin-bottom: 0.5rem; }
+  p { margin: 0; font-size: 0.88rem; font-weight: 500; color: #6b7280; }
+  small { font-size: 0.78rem; margin-top: 0.25rem; }
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid #f9fafb;
+  animation: slideIn 0.25s ease-out;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: #fafafa; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.alert-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+.alert-symbol {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #6366f1;
+  text-transform: uppercase;
+}
+
+.alert-msg {
+  font-size: 0.83rem;
+  color: #374151;
+
+  strong { font-weight: 700; color: #1a1a2e; }
+}
+
+.alert-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.alert-time {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  font-family: 'Courier New', monospace;
+}
+
+.btn-dismiss {
+  background: none;
+  border: none;
+  color: #d1d5db;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.3rem;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover { color: #ef4444; background: #fef2f2; }
+}

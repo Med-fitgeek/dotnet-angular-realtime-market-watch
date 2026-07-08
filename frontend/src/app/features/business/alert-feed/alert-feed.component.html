@@ -1,0 +1,37 @@
+<div class="widget-card">
+
+  <div class="card-header">
+    <h2 class="card-title">⚡ Alertes déclenchées</h2>
+    @if (alerts().length > 0) {
+      <button class="btn-clear" (click)="clearAll()">Tout effacer</button>
+    }
+  </div>
+
+  <div class="feed-body">
+    @if (alerts().length === 0) {
+      <div class="empty-feed">
+        <span>🔕</span>
+        <p>Aucune alerte déclenchée</p>
+        <small>Créez une alerte pour être notifié</small>
+      </div>
+    } @else {
+      @for (alert of alerts(); track alert.id) {
+        <div class="alert-item" [@fadeIn]>
+          <div class="alert-left">
+            <span class="alert-symbol">{{ alert.symbol }}</span>
+            <span class="alert-msg">
+              a atteint
+              <strong>{{ alert.price }}</strong>
+              (seuil : {{ alert.threshold }})
+            </span>
+          </div>
+          <div class="alert-right">
+            <span class="alert-time">{{ alert.receivedAt | date:'HH:mm:ss' }}</span>
+            <button class="btn-dismiss" (click)="dismiss(alert.id)" title="Fermer">✕</button>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+</div>
