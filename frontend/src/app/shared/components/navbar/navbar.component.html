@@ -1,0 +1,45 @@
+<nav class="navbar">
+
+  <!-- Brand -->
+  <a routerLink="/" class="navbar-brand">
+    <span class="brand-icon">📈</span>
+    <span class="brand-name">MarketWatch</span>
+  </a>
+
+  <!-- Links desktop -->
+  <ul class="navbar-links" [class.open]="menuOpen()">
+    @if (isLoggedIn()) {
+      <li>
+        <a routerLink="/home" routerLinkActive="active" (click)="menuOpen.set(false)">
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-user">
+        <span class="avatar">{{ username()?.charAt(0)?.toUpperCase() }}</span>
+        <span class="username">{{ username() }}</span>
+      </li>
+      <li>
+        <button class="btn-logout" (click)="logout()">Déconnexion</button>
+      </li>
+    } @else {
+      <li>
+        <a routerLink="/login" routerLinkActive="active" (click)="menuOpen.set(false)">
+          Connexion
+        </a>
+      </li>
+      <li>
+        <a routerLink="/register" class="btn-register" (click)="menuOpen.set(false)">
+          Créer un compte
+        </a>
+      </li>
+    }
+  </ul>
+
+  <!-- Burger mobile -->
+  <button class="burger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()">
+    <span [class.open]="menuOpen()"></span>
+    <span [class.open]="menuOpen()"></span>
+    <span [class.open]="menuOpen()"></span>
+  </button>
+
+</nav>
