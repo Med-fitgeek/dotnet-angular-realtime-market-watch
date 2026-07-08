@@ -1,0 +1,59 @@
+<div class="auth-page">
+  <div class="auth-card">
+
+    <div class="auth-brand">
+      <span class="brand-icon">📈</span>
+      <span class="brand-name">MarketWatch</span>
+    </div>
+
+    <h1 class="auth-title">Connexion</h1>
+    <p class="auth-subtitle">Accédez à votre tableau de bord en temps réel</p>
+
+    <form [formGroup]="form" (ngSubmit)="onLogin()" class="auth-form" novalidate>
+
+      <div class="field">
+        <label for="email">Adresse email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="vous@exemple.com"
+          [class.invalid]="email.invalid && email.touched"
+        />
+        @if (email.invalid && email.touched) {
+          <span class="field-error">Email invalide</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          [class.invalid]="password.invalid && password.touched"
+        />
+        @if (password.invalid && password.touched) {
+          <span class="field-error">Mot de passe requis</span>
+        }
+      </div>
+
+      @if (error()) {
+        <div class="alert-error">{{ error() }}</div>
+      }
+
+      <button type="submit" class="btn-primary" [disabled]="loading()">
+        @if (loading()) { <span class="spinner"></span> }
+        {{ loading() ? 'Connexion...' : 'Se connecter' }}
+      </button>
+
+    </form>
+
+    <p class="auth-link">
+      Pas encore de compte ?
+      <a routerLink="/register">Créer un compte</a>
+    </p>
+
+  </div>
+</div>
