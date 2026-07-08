@@ -1,0 +1,26 @@
+<div class="home-wrapper">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Marchés en temps réel · mis à jour chaque seconde</p>
+    </div>
+    <div class="header-user">
+      <span class="avatar">{{ username()?.charAt(0)?.toUpperCase() }}</span>
+      <span>{{ username() }}</span>
+    </div>
+  </div>
+
+  <!-- Layout principal -->
+  <div class="home-grid">
+    <section class="main-panel">
+      <app-price-dashboard />
+    </section>
+    <aside class="side-panel">
+      <app-alert-form />
+      <app-alert-feed />
+    </aside>
+  </div>
+
+</div>
