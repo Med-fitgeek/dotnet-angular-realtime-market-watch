@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using static System.Net.WebRequestMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 var allowedOrigins = builder.Configuration["AllowedOrigins"]
-    ?? "https://hellofriends-frontend-htc4avakgcg2d0ex.westeurope-01.azurewebsites.net";
+    ?? "http://localhost:4200";
 
 // Ajouter la policy CORS
 builder.Services.AddCors(options =>
@@ -32,7 +31,7 @@ builder.Services.AddHostedService<PriceSimulatorService>();
 
 // Base de données
 builder.Services.AddDbContext<MarketWatchDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Services
 builder.Services.AddScoped<AuthService>();
@@ -104,14 +103,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+
 var app = builder.Build();
 
-// Environnement développement => Swagger
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.Services.CreateScope()
+    .ServiceProvider
+    .GetRequiredService<MarketWatchDbContext>()
+    .Database.Migrate();
 
 app.UseHttpsRedirection();
 
@@ -122,10 +123,7 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapHub<PriceHub>("/hubs/price");
-});
+app.MapControllers();
+app.MapHub<PriceHub>("/hubs/price");
 
 app.Run();
