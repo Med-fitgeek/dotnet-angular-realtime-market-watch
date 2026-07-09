@@ -22,13 +22,13 @@ variables:
 
 stages:
   # ---------------------------------------------------------------
-  # STAGE 1 : Build & Test
+  # STAGE UNIQUE : Build, Test & Deploy (même job -> même workspace monté)
   # ---------------------------------------------------------------
-  - stage: Build
-    displayName: 'Build & Test Angular App'
+  - stage: BuildAndDeploy
+    displayName: 'Build & Deploy to Azure Static Web Apps'
     jobs:
-      - job: BuildJob
-        displayName: 'Install - Test - Build'
+      - job: BuildAndDeployJob
+        displayName: 'Install - Test - Build - Deploy'
         steps:
           - task: NodeTool@0
             inputs:
@@ -43,32 +43,13 @@ stages:
             workingDirectory: $(workingDirectory)
             displayName: 'ng build --configuration production'
 
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(workingDirectory)/$(outputLocation)'
-              artifact: 'drop'
-            displayName: 'Publier les artefacts de build'
-
-  # ---------------------------------------------------------------
-  # STAGE 2 : Deploy vers Azure Static Web App
-  # ---------------------------------------------------------------
-  - stage: Deploy
-    displayName: 'Deploy to Azure Static Web Apps'
-    dependsOn: Build
-    condition: succeeded()
-    jobs:
-      - job: DeployJob
-        displayName: 'Deploy stapp-market-watch'
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: 'drop'
-              path: '$(Pipeline.Workspace)/drop'
-            displayName: 'Télécharger les artefacts de build'
-
+          # IMPORTANT : app_location doit rester un chemin RELATIF au repo checkouté
+          # (System.DefaultWorkingDirectory), car la tâche tourne dans un conteneur
+          # qui ne monte que ce dossier en /working_dir. Un chemin venant d'un autre
+          # job (ex: Pipeline.Workspace/drop) n'est pas monté -> "invalid directory".
           - task: AzureStaticWebApp@0
             inputs:
-              app_location: '$(Pipeline.Workspace)/drop'
+              app_location: '$(workingDirectory)/$(outputLocation)'
               output_location: '.'
               skip_app_build: true
               skip_api_build: true
