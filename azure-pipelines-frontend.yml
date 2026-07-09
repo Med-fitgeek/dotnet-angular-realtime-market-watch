@@ -1,0 +1,76 @@
+# azure-pipelines.yml
+# CI/CD - Frontend Angular (market-watch-client)
+# Cible : Azure Static Web App "stapp-market-watch"
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - frontend/*
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  workingDirectory: 'frontend'
+  # Angular 17 (builder "application") place le build dans un sous-dossier /browser
+  outputLocation: 'dist/market-watch-client/browser'
+
+stages:
+  # ---------------------------------------------------------------
+  # STAGE 1 : Build & Test
+  # ---------------------------------------------------------------
+  - stage: Build
+    displayName: 'Build & Test Angular App'
+    jobs:
+      - job: BuildJob
+        displayName: 'Install - Test - Build'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '20.x'
+            displayName: 'Installer Node.js'
+
+          - script: npm ci
+            workingDirectory: $(workingDirectory)
+            displayName: 'npm ci'
+
+          - script: npm run build -- --configuration production
+            workingDirectory: $(workingDirectory)
+            displayName: 'ng build --configuration production'
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(workingDirectory)/$(outputLocation)'
+              artifact: 'drop'
+            displayName: 'Publier les artefacts de build'
+
+  # ---------------------------------------------------------------
+  # STAGE 2 : Deploy vers Azure Static Web App
+  # ---------------------------------------------------------------
+  - stage: Deploy
+    displayName: 'Deploy to Azure Static Web Apps'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: DeployJob
+        displayName: 'Deploy stapp-market-watch'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: 'drop'
+              path: '$(Pipeline.Workspace)/drop'
+            displayName: 'Télécharger les artefacts de build'
+
+          - task: AzureStaticWebApp@0
+            inputs:
+              app_location: '$(Pipeline.Workspace)/drop'
+              output_location: '.'
+              skip_app_build: true
+              skip_api_build: true
+              azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'
+            displayName: 'Déployer sur stapp-market-watch'
