@@ -43,6 +43,12 @@ stages:
             workingDirectory: $(workingDirectory)
             displayName: 'ng build --configuration production'
 
+          - script: |
+              if [ -z "$TOKEN" ]; then echo "TOKEN VIDE"; else echo "TOKEN présent, longueur: ${#TOKEN}"; fi
+            env:
+              TOKEN: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
+            displayName: 'Debug token (ne pas garder en prod)'
+
           # IMPORTANT : app_location doit rester un chemin RELATIF au repo checkouté
           # (System.DefaultWorkingDirectory), car la tâche tourne dans un conteneur
           # qui ne monte que ce dossier en /working_dir. Un chemin venant d'un autre
