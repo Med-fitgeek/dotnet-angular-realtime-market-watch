@@ -4,12 +4,103 @@
   <div class="page-header">
     <div>
       <h1 class="page-title">Dashboard</h1>
-      <p class="page-subtitle">Marchés en temps réel · mis à jour chaque seconde</p>
+      <p class="page-subtitle">Live markets · updated every second</p>
     </div>
     <div class="header-user">
       <span class="avatar">{{ username()?.charAt(0)?.toUpperCase() }}</span>
-      <span>{{ username() }}</span>
+      <span class="username-label">{{ username() }}</span>
     </div>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-icon--assets">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <div class="kpi-body">
+        <span class="kpi-label">Assets tracked</span>
+        <span class="kpi-value">{{ assetCount() }}</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-icon--alerts">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </div>
+      <div class="kpi-body">
+        <span class="kpi-label">Active alerts</span>
+        <span class="kpi-value">{{ alertCount() }}</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-icon--up">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+          <polyline points="17 6 23 6 23 12"/>
+        </svg>
+      </div>
+      <div class="kpi-body">
+        <span class="kpi-label">Top gainer</span>
+        @if (topGainer()) {
+          <span class="kpi-value">
+            {{ topGainer()!.symbol }}
+            <span class="kpi-badge kpi-badge--up">
+              +{{ topGainer()!.variation | number:'1.2-2' }}%
+            </span>
+          </span>
+        } @else {
+          <span class="kpi-value kpi-value--muted">—</span>
+        }
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-icon--down">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/>
+          <polyline points="17 18 23 18 23 12"/>
+        </svg>
+      </div>
+      <div class="kpi-body">
+        <span class="kpi-label">Top loser</span>
+        @if (topLoser()) {
+          <span class="kpi-value">
+            {{ topLoser()!.symbol }}
+            <span class="kpi-badge kpi-badge--down">
+              {{ topLoser()!.variation | number:'1.2-2' }}%
+            </span>
+          </span>
+        } @else {
+          <span class="kpi-value kpi-value--muted">—</span>
+        }
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon" [class.kpi-icon--connected]="isConnected()" [class.kpi-icon--disconnected]="!isConnected()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 6s4-2 11-2 11 2 11 2"/>
+          <path d="M1 12s4-2 11-2 11 2 11 2"/>
+          <circle cx="12" cy="20" r="2"/>
+        </svg>
+      </div>
+      <div class="kpi-body">
+        <span class="kpi-label">Connection</span>
+        <span class="kpi-value">
+          <span class="connection-dot" [class.connected]="isConnected()"></span>
+          {{ isConnected() ? 'SignalR live' : 'Disconnected' }}
+        </span>
+      </div>
+    </div>
+
   </div>
 
   <!-- Layout principal -->
