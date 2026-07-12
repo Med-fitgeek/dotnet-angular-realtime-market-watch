@@ -1,0 +1,16 @@
+<div class="ticker-wrapper">
+  <div class="ticker-label">Markets</div>
+  <div class="ticker-track">
+    <div class="ticker-inner">
+      @for (item of doubled; track $index) {
+        <div class="ticker-item">
+          <span class="ticker-symbol">{{ item.symbol }}</span>
+          <span class="ticker-price">{{ item.price }}</span>
+          <span class="ticker-change" [class.up]="item.up" [class.down]="!item.up">
+            {{ item.change }}
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+</div>
