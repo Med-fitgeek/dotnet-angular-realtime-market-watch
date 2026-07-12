@@ -1,37 +1,45 @@
 trigger:
-  branches:
-    include:
-      - main
+- azure-pipelines
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
 
 variables:
   buildConfiguration: Release
-  project: backend/MarketWatchApi.csproj
 
 steps:
+
 - task: UseDotNet@2
   inputs:
     packageType: sdk
-    version: '9.x'
+    version: '9.0.x'
 
-- script: dotnet restore $(project)
+- task: DotNetCoreCLI@2
   displayName: Restore
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
 
-- script: dotnet build $(project) --configuration $(buildConfiguration) --no-restore
+- task: DotNetCoreCLI@2
   displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
 
-- script: dotnet test backend/MarketWatchApi.sln --configuration $(buildConfiguration) --no-build
-  displayName: Test
-  continueOnError: true
-
-- script: dotnet publish $(project) --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+- task: DotNetCoreCLI@2
   displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: '**/MarketWatchApi.csproj'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: true
 
 - task: AzureWebApp@1
+  displayName: Deploy to Azure Web App
   inputs:
-    azureSubscription: sc-market-watch
+    azureSubscription: 'sc-market-watch'
     appType: webAppLinux
-    appName: api-market-watch
-    package: $(Build.ArtifactStagingDirectory)
+    appName: 'api-market-watch'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
