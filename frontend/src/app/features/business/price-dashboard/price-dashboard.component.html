@@ -3,19 +3,20 @@
   <div class="card-header">
     <h2 class="card-title">
       <span class="live-dot"></span>
-      Prix en direct
+      Live prices
     </h2>
-    <span class="asset-count">{{ rows().length }} actifs</span>
+    <span class="asset-count">{{ rows().length }} assets</span>
   </div>
 
   <div class="table-wrapper">
     <table class="price-table">
       <thead>
         <tr>
-          <th>Actif</th>
-          <th class="align-right">Prix</th>
-          <th class="align-right">Variation</th>
-          <th class="align-right">Heure</th>
+          <th>Asset</th>
+          <th class="align-right">Price</th>
+          <th class="align-right">Change</th>
+          <th class="align-center">Last 50 ticks</th>
+          <th class="align-right">Time</th>
         </tr>
       </thead>
       <tbody>
@@ -44,16 +45,24 @@
               </span>
             </td>
 
+            <!-- Sparkline -->
+            <td class="align-center chart-cell">
+              <app-price-chart
+                [points]="row.history"
+                [variation]="row.variation"
+              />
+            </td>
+
             <td class="align-right time-cell">
-              {{ row.timestamp }}
+              {{ row.timestamp | date:'HH:mm:ss' }}
             </td>
 
           </tr>
         } @empty {
           <tr>
-            <td colspan="4" class="empty-state">
+            <td colspan="5" class="empty-state">
               <span class="spinner"></span>
-              Connexion au flux de données...
+              Connecting to data feed...
             </td>
           </tr>
         }

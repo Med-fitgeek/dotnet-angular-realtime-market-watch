@@ -130,6 +130,13 @@
   &.neutral { color: #6b7280; background: #f3f4f6; }
 }
 
+.align-center { text-align: center; }
+
+.chart-cell {
+  padding: 0.5rem 1rem !important;
+  vertical-align: middle;
+}
+
 // Flash animations
 @keyframes flashUp {
   0%   { background: #dcfce7; }
