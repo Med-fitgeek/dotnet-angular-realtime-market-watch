@@ -1,0 +1,27 @@
+<section class="features">
+  <div class="features-inner">
+
+    <div class="features-header">
+      <span class="features-eyebrow">Features</span>
+      <h2 class="features-title">Everything you need to watch your markets</h2>
+      <p class="features-subtitle">
+        Built with a production-grade stack — no shortcuts.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      @for (f of features; track f.title) {
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path [attr.d]="f.icon"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">{{ f.title }}</h3>
+          <p class="feature-desc">{{ f.desc }}</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>
