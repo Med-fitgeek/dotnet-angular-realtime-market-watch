@@ -32,7 +32,14 @@
   gap: 0.5rem;
   text-decoration: none;
 
-  .brand-icon { font-size: 1.3rem; }
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
+  
   .brand-name {
     font-size: 1rem;
     font-weight: 700;
