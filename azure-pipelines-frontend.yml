@@ -1,76 +1,32 @@
-# azure-pipelines.yml
-# CI/CD - Frontend Angular (market-watch-client)
-# Cible : Azure Static Web App "stapp-market-watch"
+name: Azure Static Web Apps CI/CD
 
+pr:
+  branches:
+    include:
+      - main
 trigger:
   branches:
     include:
       - main
-  paths:
-    include:
-      - frontend/*
 
-pr: none
+jobs:
+- job: build_and_deploy_job
+  displayName: Build and Deploy Job
+  condition: or(eq(variables['Build.Reason'], 'Manual'),or(eq(variables['Build.Reason'], 'PullRequest'),eq(variables['Build.Reason'], 'IndividualCI')))
+  pool:
+    vmImage: ubuntu-latest
+  variables:
+  - group: Azure-Static-Web-Apps-delightful-bay-081ab930f-variable-group
+  steps:
+  - checkout: self
+    submodules: true
+  - task: AzureStaticWebApp@0
+    inputs:
+      azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_DELIGHTFUL_BAY_081AB930F)
+###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+# For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+      app_location: "/frontend" # App source code path
+      api_location: "" # Api source code path - optional
+      output_location: "dist/market-watch-client/browser" # Built app content directory - optional
+###### End of Repository/Build Configurations ######
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-variables:
-  workingDirectory: 'frontend'
-  # Angular 17 (builder "application") place le build dans un sous-dossier /browser
-  outputLocation: 'dist/market-watch-client/browser'
-
-stages:
-  # ---------------------------------------------------------------
-  # STAGE 1 : Build & Test
-  # ---------------------------------------------------------------
-  - stage: Build
-    displayName: 'Build & Test Angular App'
-    jobs:
-      - job: BuildJob
-        displayName: 'Install - Test - Build'
-        steps:
-          - task: NodeTool@0
-            inputs:
-              versionSpec: '20.x'
-            displayName: 'Installer Node.js'
-
-          - script: npm ci
-            workingDirectory: $(workingDirectory)
-            displayName: 'npm ci'
-
-          - script: npm run build -- --configuration production
-            workingDirectory: $(workingDirectory)
-            displayName: 'ng build --configuration production'
-
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(workingDirectory)/$(outputLocation)'
-              artifact: 'drop'
-            displayName: 'Publier les artefacts de build'
-
-  # ---------------------------------------------------------------
-  # STAGE 2 : Deploy vers Azure Static Web App
-  # ---------------------------------------------------------------
-  - stage: Deploy
-    displayName: 'Deploy to Azure Static Web Apps'
-    dependsOn: Build
-    condition: succeeded()
-    jobs:
-      - job: DeployJob
-        displayName: 'Deploy stapp-market-watch'
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: 'drop'
-              path: '$(Pipeline.Workspace)/drop'
-            displayName: 'Télécharger les artefacts de build'
-
-          - task: AzureStaticWebApp@0
-            inputs:
-              app_location: '$(Pipeline.Workspace)/drop'
-              output_location: '.'
-              skip_app_build: true
-              skip_api_build: true
-              azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'
-            displayName: 'Déployer sur stapp-market-watch'
