@@ -1,18 +1,19 @@
 import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
-export class LoginComponent {
+export class RegisterComponent {
   form: FormGroup;
-  error  = signal<string | null>(null);
+  error   = signal<string | null>(null);
+  success = signal(false);
   loading = signal(false);
 
   constructor(
@@ -21,24 +22,29 @@ export class LoginComponent {
     private router: Router
   ) {
     this.form = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
       email:    ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
+  get username() { return this.form.get('username')!; }
   get email()    { return this.form.get('email')!; }
   get password() { return this.form.get('password')!; }
 
-  onLogin() {
+  onRegister() {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
 
     this.loading.set(true);
     this.error.set(null);
 
-    this.auth.login(this.form.value).subscribe({
-      next: () => this.router.navigate(['/home']),
+    this.auth.register(this.form.value).subscribe({
+      next: () => {
+        this.success.set(true);
+        setTimeout(() => this.router.navigate(['/login']), 1500);
+      },
       error: () => {
-        this.error.set('Email ou mot de passe incorrect.');
+        this.error.set('Inscription échouée. Email déjà utilisé ?');
         this.loading.set(false);
       }
     });
