@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
-import { environment } from '../../../../../environment';
+import { environment } from '../../../../environment.prod';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
